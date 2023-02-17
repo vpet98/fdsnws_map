@@ -181,16 +181,23 @@ function mapStations() {
     fetchUrl = fetchUrl.replace('&matchtimeseries=true', '').replace('?matchtimeseries=true', '?').replace(/\?$/, '');
     fetchUrl = fetchUrl.replace('&nodata=404', '').replace('?nodata=404', '?').replace(/\?$/, '');
     fetchUrl = fetchUrl.replace('&formatted=true', '').replace('?formatted=true', '?').replace(/\?$/, '');
-    console.log(fetchUrl);
 
     // get map icons
     var icons = {
-      HL: L.icon({iconUrl: './images/HL.png'}),
-      HA: L.icon({iconUrl: './images/HA.png'}),
-      HC: L.icon({iconUrl: './images/HC.png'}),
-      HT: L.icon({iconUrl: './images/HT.png'}),
-      HP: L.icon({iconUrl: './images/HP.png'}),
-      OTHERS: L.icon({iconUrl: './images/others.png'})
+      'HL': L.icon({iconUrl: './images/HL.png'}),
+      'HA': L.icon({iconUrl: './images/HA.png'}),
+      'HC': L.icon({iconUrl: './images/HC.png'}),
+      'HT': L.icon({iconUrl: './images/HT.png'}),
+      'HP': L.icon({iconUrl: './images/HP.png'}),
+      'HI': L.icon({iconUrl: './images/HI.png'}),
+      'CQ': L.icon({iconUrl: './images/CQ.png'}),
+      '1Y': L.icon({iconUrl: './images/1Y.png'}),
+      'ME': L.icon({iconUrl: './images/ME.png'}),
+      '5S': L.icon({iconUrl: './images/5S.png'}),
+      'EG': L.icon({iconUrl: './images/EG.png'}),
+      'YB': L.icon({iconUrl: './images/YB.png'}),
+      'X5': L.icon({iconUrl: './images/X5.png'}),
+      'OTHERS': L.icon({iconUrl: './images/others.png'})
     }
 
     // fetch stations
