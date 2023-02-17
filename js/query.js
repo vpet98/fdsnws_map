@@ -114,6 +114,13 @@ function serialize(form, loc='query') {
 function fdsnwsInitQueryForm() {
 
   var queryForm = document.getElementById('query-form');
+  var queryURL = document.getElementById('query-url');
+
+	function updateQueryURL() {
+		var url = 'https://eida.gein.noa.gr/fdsnws/station/1/' + serialize(queryForm)
+		queryURL.setAttribute('href', url);
+		queryURL.innerHTML = url;
+	}
 
 	function toggleLocation() {
 		for ( i = 0; radio = locRadios[i]; i++ ) {
@@ -122,6 +129,7 @@ function fdsnwsInitQueryForm() {
 				input.style.display = radio.checked ? 'block' : 'none';
 			}
 		}
+    updateQueryURL();
 	}
 
 	var element, i;
@@ -132,9 +140,19 @@ function fdsnwsInitQueryForm() {
 			locRadios.push(element);
 			element.onclick = toggleLocation;
 		}
+    else {
+			element.oninput = updateQueryURL
+			element.onchange = updateQueryURL
+		}
+	}
+
+  var elements = queryForm.getElementsByTagName('select');
+	for ( i = 0; element = elements[i]; i++ ) {
+		element.onchange = updateQueryURL
 	}
 
 	toggleLocation();
+  updateQueryURL();
 }
 
 function mapStations() {
@@ -144,11 +162,7 @@ function mapStations() {
   var selectLevel = document.getElementsByName('level')[0];
   var selectFormat = document.getElementsByName('format')[0];
   var updateAfter = document.getElementsByName('updateafter')[0];
-
-  // set url that appears
   var url = 'https://eida.gein.noa.gr/fdsnws/station/1/' + serialize(queryForm)
-  queryURL.setAttribute('href', url);
-  queryURL.innerHTML = url;
 
   // clear map
   map.eachLayer(function (layer) {
