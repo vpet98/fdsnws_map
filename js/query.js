@@ -32,7 +32,7 @@ function serialize(form, loc='query') {
 			case 'password':
 			case 'button':
 			case 'reset':
-      case 'datetime-local':
+      case 'date':
         q.push(element.name + "=" + encodeURIComponent(element.value));
         break;
 
