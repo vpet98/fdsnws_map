@@ -189,7 +189,6 @@ function mapStations() {
         fetchUrl = url.replace(`format=${selectFormat.value}`, 'format=text');
       }
     }
-    fetchUrl = fetchUrl.replace('&includerestricted=false', '').replace('?includerestricted=false', '?').replace(/\?$/, '');
     fetchUrl = fetchUrl.replace('&includeavailability=true', '').replace('?includeavailability=true', '?').replace(/\?$/, '');
     fetchUrl = fetchUrl.replace(`&updateafter=${updateAfter.value}`, '').replace(`?updateafter=${updateAfter.value}`, '?').replace(/\?$/, '');
     fetchUrl = fetchUrl.replace('&matchtimeseries=true', '').replace('?matchtimeseries=true', '?').replace(/\?$/, '');
