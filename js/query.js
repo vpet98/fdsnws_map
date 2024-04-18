@@ -179,14 +179,14 @@ function mapStations() {
     if (selectFormat.value !== 'text') {
       if (!url.includes('format=')) {
         if (url.includes('query?')) {
-          fetchUrl = url+'&format=text';
+          fetchUrl = url+'&format=text&level=channel';
         }
         else {
-          fetchUrl = url+'?format=text';
+          fetchUrl = url+'?format=text&level=channel';
         }
       }
       else {
-        fetchUrl = url.replace(`format=${selectFormat.value}`, 'format=text');
+        fetchUrl = url.replace(`format=${selectFormat.value}`, 'format=text&level=channel');
       }
     }
     fetchUrl = fetchUrl.replace('&includeavailability=true', '').replace('?includeavailability=true', '?').replace(/\?$/, '');
@@ -197,22 +197,25 @@ function mapStations() {
 
     // get map icons
     var icons = {
-      'HL': L.icon({iconUrl: './images/HL.png'}),
-      'HA': L.icon({iconUrl: './images/HA.png'}),
-      'HC': L.icon({iconUrl: './images/HC.png'}),
-      'HT': L.icon({iconUrl: './images/HT.png'}),
-      'HP': L.icon({iconUrl: './images/HP.png'}),
-      'HI': L.icon({iconUrl: './images/HI.png'}),
-      'CQ': L.icon({iconUrl: './images/CQ.png'}),
-      '1Y': L.icon({iconUrl: './images/1Y.png'}),
-      'ME': L.icon({iconUrl: './images/ME.png'}),
-      '5S': L.icon({iconUrl: './images/5S.png'}),
-      'EG': L.icon({iconUrl: './images/EG.png'}),
-      'YB': L.icon({iconUrl: './images/YB.png'}),
-      'X5': L.icon({iconUrl: './images/X5.png'}),
-      'OTHERS': L.icon({iconUrl: './images/others.png'})
+      'HL': [L.icon({iconUrl: './images/HL_H.png'}), L.icon({iconUrl: './images/HL_N.png'})],
+      'HA': [L.icon({iconUrl: './images/HA_H.png'}), L.icon({iconUrl: './images/HA_N.png'})],
+      'HC': [L.icon({iconUrl: './images/HC_H.png'}), L.icon({iconUrl: './images/HC_N.png'})],
+      'HT': [L.icon({iconUrl: './images/HT_H.png'}), L.icon({iconUrl: './images/HT_N.png'})],
+      'HP': [L.icon({iconUrl: './images/HP_H.png'}), L.icon({iconUrl: './images/HP_N.png'})],
+      'HI': [L.icon({iconUrl: './images/HI_H.png'}), L.icon({iconUrl: './images/HI_N.png'})],
+      'CQ': [L.icon({iconUrl: './images/CQ_H.png'}), L.icon({iconUrl: './images/CQ_N.png'})],
+      '1Y': [L.icon({iconUrl: './images/1Y_H.png'}), L.icon({iconUrl: './images/1Y_N.png'})],
+      'ME': [L.icon({iconUrl: './images/ME_H.png'}), L.icon({iconUrl: './images/ME_N.png'})],
+      '5S': [L.icon({iconUrl: './images/5S_H.png'}), L.icon({iconUrl: './images/5S_N.png'})],
+      'EG': [L.icon({iconUrl: './images/EG_H.png'}), L.icon({iconUrl: './images/EG_N.png'})],
+      'YB': [L.icon({iconUrl: './images/YB_H.png'}), L.icon({iconUrl: './images/YB_N.png'})],
+      'X5': [L.icon({iconUrl: './images/X5_H.png'}), L.icon({iconUrl: './images/X5_N.png'})],
+			'5B': [L.icon({iconUrl: './images/5B_H.png'}), L.icon({iconUrl: './images/5B_N.png'})],
+			'MK': [L.icon({iconUrl: './images/MK_H.png'}), L.icon({iconUrl: './images/MK_N.png'})],
+      'OTHERS': [L.icon({iconUrl: './images/others_H.png'}), L.icon({iconUrl: './images/others_N.png'})]
     }
 
+		const stations = new Set();
     // fetch stations
     fetch(fetchUrl)
     .then(response => response.text())
@@ -220,8 +223,17 @@ function mapStations() {
       for (l of data.split('\n').slice(1)) {
         if (l) {
           let fields = l.split('|')
-          let marker = L.marker([fields[2], fields[3]], {icon: icons[fields[0]] || icons['OTHERS']}).addTo(map);
-          marker.bindPopup(`Network: ${fields[0]}<br>Station: ${fields[1]}`);
+					if (!stations.has(fields[1])) {
+        		stations.add(fields[1]);
+            if (fields[3].startsWith('HH')) {
+              icon = icons[fields[0]][0] || icons['OTHERS'][0];
+            }
+						else {
+              icon = icons[fields[0]][1] || icons['OTHERS'][1];
+            }
+          	let marker = L.marker([fields[4], fields[5]], {icon: icon}).addTo(map);
+          	marker.bindPopup(`Network: ${fields[0]}<br>Station: ${fields[1]}`);
+					}
         }
       }
     })
